@@ -2,25 +2,40 @@
   "name": "itani-kobs-wallet",
   "version": "0.0.0",
   "private": true,
-  "type": "module",
+  "main": "electron.js",
+  "homepage": "./",
   "scripts": {
     "dev": "vite",
-    "build": "run-p type-check \"build-only {@}\" --",    "build-demo": "NODE_ENV=development run-p type-check \"build-only {@}\" --",
-    "build-mainnet": "NODE_ENV=production run-p type-check \"build-only {@}\" --",    "preview": "vite preview",
+    "build": "run-p type-check \"build-only {@}\" --",
+    "build-demo": "NODE_ENV=development run-p type-check \"build-only {@}\" --",
+    "build-mainnet": "NODE_ENV=production run-p type-check \"build-only {@}\" --",
+    "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --build",
     "lint": "run-s lint:*",
     "lint:oxlint": "oxlint . --fix",
     "lint:eslint": "eslint . --fix --cache",
-    "format": "prettier --write --experimental-cli src/"
+    "format": "prettier --write --experimental-cli src/",
+    "electron": "electron .",
+    "electron-dev": "concurrently \"npm run dev\" \"wait-on http://localhost:5173 && electron .\"",
+    "build-electron": "npm run build && electron-builder",
+    "build-electron-win": "npm run build && electron-builder --win",
+    "build-electron-mac": "npm run build && electron-builder --mac",
+    "cap-sync": "cap sync",
+    "cap-build-android": "npm run build && cap sync android && cap build android",
+    "cap-build-ios": "npm run build && cap sync ios && cap build ios"
   },
   "dependencies": {
+    "@capacitor/android": "^8.0.2",
+    "@capacitor/cli": "^8.0.2",
+    "@capacitor/core": "^8.0.2",
+    "@capacitor/ios": "^8.0.2",
     "@cosmjs/amino": "^0.38.1",
     "@cosmjs/math": "^0.38.1",
     "@cosmjs/proto-signing": "^0.38.1",
     "@cosmjs/stargate": "^0.38.1",
-    "@solana/web3.js": "^1.98.4",
     "@noble/secp256k1": "^2.2.3",
+    "@solana/web3.js": "^1.98.4",
     "@vueuse/core": "^14.2.0",
     "axios": "^1.13.4",
     "bip39": "^3.1.0",
@@ -37,6 +52,8 @@
     "@vitejs/plugin-vue": "^6.0.3",
     "@vue/eslint-config-typescript": "^14.6.0",
     "@vue/tsconfig": "^0.8.1",
+    "electron": "^40.1.0",
+    "electron-builder": "^26.7.0",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-oxlint": "~1.42.0",
@@ -52,5 +69,50 @@
   },
   "engines": {
     "node": "^20.19.0 || >=22.12.0"
+  },
+  "build": {
+    "appId": "dev.itanidreams.wallet",
+    "productName": "iTani Kobs Wallet",
+    "directories": {
+      "output": "dist-electron"
+    },
+    "files": [
+      "dist/**/*",
+      "electron.js",
+      "node_modules/**/*"
+    ],
+    "mac": {
+      "category": "public.app-category.finance",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": ["x64", "arm64"]
+        }
+      ]
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64", "ia32"]
+        },
+        {
+          "target": "msi",
+          "arch": ["x64", "ia32"]
+        }
+      ]
+    },
+    "linux": {
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": ["x64"]
+        },
+        {
+          "target": "deb",
+          "arch": ["x64"]
+        }
+      ]
+    }
   }
 }

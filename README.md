@@ -53,6 +53,41 @@ iTani-Wallet/
 
 La configuration se bascule automatiquement via la variable `NODE_ENV`.
 
+## Builds Multiplateforme
+
+IKW est compatible avec toutes les plateformes majeures. Utilisez les commandes suivantes pour générer les installateurs :
+
+### Développement
+```bash
+npm run dev              # Web dev server
+npm run electron-dev     # Electron dev avec hot reload
+```
+
+### Builds
+```bash
+# Build complet pour toutes les plateformes
+./build-all.sh
+
+# Builds individuels
+npm run build-electron   # Windows (.exe), Mac (.dmg), Linux
+npm run cap-build-android # Android (.apk)
+npm run cap-build-ios    # iOS (.ipa) - nécessite macOS
+```
+
+### Fichiers générés
+- **Android** : `android/app/build/outputs/apk/debug/app-debug.apk`
+- **iOS** : `ios/App/App.xcarchive` (nécessite Xcode)
+- **Windows** : `dist-electron/iTani Kobs Wallet Setup X.X.X.exe` + `.msi`
+- **macOS** : `dist-electron/iTani Kobs Wallet-X.X.X.dmg`
+- **Linux** : `dist-electron/iTani Kobs Wallet-X.X.X.AppImage` + `.deb`
+
+### Distribution
+- **Google Play Store** : Uploadez l'APK signé
+- **Apple App Store** : Uploadez l'IPA via App Store Connect
+- **Windows Store** : Uploadez l'EXE/MSI
+- **macOS App Store** : Uploadez le DMG
+- **Web** : Déployez le dossier `dist/` sur un serveur web
+
 ## Architecture
 
 - Vue 3 + TypeScript
