@@ -2,7 +2,8 @@
 import { defineStore } from 'pinia';
 import { ref, computed, watch } from 'vue';
 import CryptoJS from 'crypto-js';
-import { ItaniChain, getItaniConfig, ITANI_TOKENS, ItaniToken } from '@/chains/itani';
+import type { ItaniToken } from '@/chains/itani';
+import { ItaniChain, getItaniConfig, ITANI_TOKENS } from '@/chains/itani';
 import { EthereumChain, ethereumConfig } from '@/chains/ethereum';
 import { SolanaChain, solanaConfig } from '@/chains/solana';
 import { BitcoinChain, bitcoinConfig } from '@/chains/bitcoin';
@@ -139,16 +140,6 @@ export const useWalletStore = defineStore('wallet', () => {
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
   }
->>>>>>> f830d8f8a04c4e78fb70a5aabf25efccbd960a40
-
-  const chains = {
-    itani: new ItaniChain(getItaniConfig(isMainnet.value)),
-    ethereum: new EthereumChain(ethereumConfig),
-    solana: new SolanaChain(solanaConfig),
-    bitcoin: new BitcoinChain(bitcoinConfig),
-    cosmos: new CosmosChain(cosmosConfig),
-    avalanche: new AvalancheChain(avalancheConfig),
-  };
 
   const userAccounts = computed(() => {
     if (!currentUserEmail.value) return [];
@@ -228,6 +219,15 @@ export const useWalletStore = defineStore('wallet', () => {
       refreshAllTokenBalances();
     }
   }
+
+  const chains = {
+    itani: new ItaniChain(getItaniConfig(isMainnet.value)),
+    ethereum: new EthereumChain(ethereumConfig),
+    solana: new SolanaChain(solanaConfig),
+    bitcoin: new BitcoinChain(bitcoinConfig),
+    cosmos: new CosmosChain(cosmosConfig),
+    avalanche: new AvalancheChain(avalancheConfig),
+  };
 
   async function refreshBalance() {
     if (currentAccount.value) {

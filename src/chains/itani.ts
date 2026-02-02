@@ -202,4 +202,19 @@ export class ItaniChain {
   isNativeToken(symbol: string): boolean {
     return ITANI_TOKENS.some(token => token.symbol === symbol && token.isNative);
   }
+
+  // Appeler un contrat déployé (DEX, Governance, Oracle)
+  async callContract(contractName: string, method: string, params: any[] = []): Promise<any> {
+    const response = await axios.post(this.config.rpcUrl, {
+      jsonrpc: "2.0",
+      id: Date.now(),
+      method: "kobs_call_contract",
+      params: {
+        contract: contractName,
+        method,
+        args: params
+      }
+    });
+    return response.data.result;
+  }
 }
