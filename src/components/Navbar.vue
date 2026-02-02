@@ -3,14 +3,14 @@
     <div class="logo">
       <h1>iTani Kobs Wallet</h1>
     </div>
-    <div class="nav-links">
-      <RouterLink to="/">Dashboard</RouterLink>
+    <div v-if="walletStore.isAuthenticated" class="nav-links">
+      <RouterLink to="/dashboard">Dashboard</RouterLink>
       <RouterLink to="/accounts">Accounts</RouterLink>
       <RouterLink to="/send">Send</RouterLink>
       <RouterLink to="/swap">Swap</RouterLink>
       <RouterLink to="/history">History</RouterLink>
     </div>
-    <div class="chain-selector">
+    <div v-if="walletStore.isAuthenticated" class="chain-selector">
       <select v-model="walletStore.currentChain" @change="walletStore.refreshBalance()">
         <option value="itani">iTani</option>
         <option value="ethereum">Ethereum</option>
@@ -20,6 +20,9 @@
         <option value="avalanche">Avalanche</option>
       </select>
     </div>
+    <div v-if="walletStore.isAuthenticated" class="auth-actions">
+      <button type="button" class="logout" @click="logout">Déconnexion</button>
+    </div>
   </nav>
 </template>
 
@@ -28,6 +31,10 @@ import { RouterLink } from 'vue-router'
 import { useWalletStore } from '@/stores/wallet'
 
 const walletStore = useWalletStore()
+
+function logout() {
+  walletStore.logout()
+}
 </script>
 
 <style scoped>
@@ -52,5 +59,18 @@ const walletStore = useWalletStore()
 
 .chain-selector select {
   padding: 5px;
+}
+
+.auth-actions {
+  display: flex;
+  align-items: center;
+}
+
+.logout {
+  background: none;
+  border: 1px solid #ced4da;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
 }
 </style>
