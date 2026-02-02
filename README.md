@@ -42,7 +42,16 @@ iTani-Wallet/
 
 1. Clone the repo
 2. `npm install`
-3. `npm run dev`
+3. Pour la version démo (testnet) : `npm run build-demo`
+4. Pour la version réelle (mainnet) : `npm run build-mainnet`
+5. Ou pour le développement : `npm run dev` (utilise automatiquement le testnet)
+
+## Versions
+
+- **Version Démo (Testnet)** : Connectée au testnet local ou distant d'iTani Network Chain. Utilisée pour les tests et la démonstration.
+- **Version Réelle (Mainnet)** : Connectée au mainnet d'iTani Network Chain. Utilisée pour les transactions réelles.
+
+La configuration se bascule automatiquement via la variable `NODE_ENV`.
 
 ## Architecture
 
