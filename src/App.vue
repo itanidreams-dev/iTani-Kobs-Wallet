@@ -1,10 +1,7 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-import { useWalletStore } from '@/stores/wallet'
 import Navbar from './components/Navbar.vue'
 import BalanceTooltip from './components/BalanceTooltip.vue'
-
-const walletStore = useWalletStore()
 </script>
 
 <template>
