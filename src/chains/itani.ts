@@ -22,7 +22,7 @@ export const itaniMainnetConfig: ItaniConfig = {
 };
 
 // Configuration actuelle (basculable via variable d'environnement ou mode)
-export const itaniConfig: ItaniConfig = process.env.NODE_ENV === 'production' ? itaniMainnetConfig : itaniTestnetConfig;
+export const itaniConfig: ItaniConfig = itaniMainnetConfig; // Forcer mainnet par défaut sur master
 
 // Définition des tokens iTani natifs (priorité absolue)
 export interface ItaniToken {
