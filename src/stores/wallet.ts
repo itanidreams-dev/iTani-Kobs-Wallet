@@ -2,7 +2,7 @@
 import { defineStore } from 'pinia';
 import { ref, computed, watch } from 'vue';
 import CryptoJS from 'crypto-js';
-import { ItaniChain, itaniConfig, ITANI_TOKENS, ItaniToken } from '@/chains/itani';
+import { ItaniChain, getItaniConfig, ITANI_TOKENS, ItaniToken } from '@/chains/itani';
 import { EthereumChain, ethereumConfig } from '@/chains/ethereum';
 import { SolanaChain, solanaConfig } from '@/chains/solana';
 import { BitcoinChain, bitcoinConfig } from '@/chains/bitcoin';
@@ -37,6 +37,7 @@ export const useWalletStore = defineStore('wallet', () => {
   const currentTokenBalances = ref<TokenBalance[]>([]);
   const isAuthenticated = ref(false);
   const currentUserEmail = ref<string | null>(null);
+  const isMainnet = ref(false); // false = testnet (demo), true = mainnet (reel)
 
   const STORAGE_KEY = 'itani_wallet_state';
 
@@ -141,7 +142,7 @@ export const useWalletStore = defineStore('wallet', () => {
 >>>>>>> f830d8f8a04c4e78fb70a5aabf25efccbd960a40
 
   const chains = {
-    itani: new ItaniChain(itaniConfig),
+    itani: new ItaniChain(getItaniConfig(isMainnet.value)),
     ethereum: new EthereumChain(ethereumConfig),
     solana: new SolanaChain(solanaConfig),
     bitcoin: new BitcoinChain(bitcoinConfig),
@@ -214,6 +215,16 @@ export const useWalletStore = defineStore('wallet', () => {
     currentChain.value = chain;
     // Recharger les balances quand on change de chaîne
     if (chain === 'itani') {
+      refreshAllTokenBalances();
+    }
+  }
+
+  function toggleNetwork() {
+    isMainnet.value = !isMainnet.value;
+    // Recréer la chaîne iTani avec la nouvelle config
+    chains.itani = new ItaniChain(getItaniConfig(isMainnet.value));
+    // Recharger les balances
+    if (currentChain.value === 'itani') {
       refreshAllTokenBalances();
     }
   }
@@ -296,6 +307,7 @@ export const useWalletStore = defineStore('wallet', () => {
     currentUserEmail,
     userAccounts,
     isAuthenticated,
+    isMainnet,
     addAccount,
     addUser,
     hasUser,
@@ -307,6 +319,7 @@ export const useWalletStore = defineStore('wallet', () => {
     hashPassword,
     normalizeEmail,
     switchChain,
+    toggleNetwork,
     refreshBalance,
     refreshAllTokenBalances,
     deployContract,

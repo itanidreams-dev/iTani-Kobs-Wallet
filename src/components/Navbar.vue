@@ -20,6 +20,16 @@
         <option value="avalanche">Avalanche</option>
       </select>
     </div>
+    <div v-if="walletStore.isAuthenticated" class="network-toggle">
+      <button 
+        type="button" 
+        class="network-btn" 
+        :class="{ 'mainnet': walletStore.isMainnet }"
+        @click="walletStore.toggleNetwork()"
+      >
+        {{ walletStore.isMainnet ? 'RÉEL' : 'DÉMO' }}
+      </button>
+    </div>
     <div v-if="walletStore.isAuthenticated" class="auth-actions">
       <button type="button" class="logout" @click="logout">Déconnexion</button>
     </div>
@@ -59,6 +69,36 @@ function logout() {
 
 .chain-selector select {
   padding: 5px;
+}
+
+.network-toggle {
+  margin-left: 10px;
+}
+
+.network-btn {
+  padding: 8px 16px;
+  border: 2px solid #007bff;
+  background: white;
+  color: #007bff;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.network-btn:hover {
+  background: #007bff;
+  color: white;
+}
+
+.network-btn.mainnet {
+  border-color: #dc3545;
+  color: #dc3545;
+}
+
+.network-btn.mainnet:hover {
+  background: #dc3545;
+  color: white;
 }
 
 .auth-actions {

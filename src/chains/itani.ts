@@ -21,8 +21,8 @@ export const itaniMainnetConfig: ItaniConfig = {
   chainId: 'itani-mainnet',
 };
 
-// Configuration actuelle (basculable via variable d'environnement ou mode)
-export const itaniConfig: ItaniConfig = process.env.NODE_ENV === 'production' ? itaniMainnetConfig : itaniTestnetConfig;
+// Configuration actuelle (basculable dynamiquement)
+export const getItaniConfig = (isMainnet: boolean) => isMainnet ? itaniMainnetConfig : itaniTestnetConfig;
 
 // Définition des tokens iTani natifs (priorité absolue)
 export interface ItaniToken {
